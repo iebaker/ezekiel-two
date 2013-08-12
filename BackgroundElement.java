@@ -28,6 +28,8 @@ class BackgroundElement extends GameElement {
 				Portals temp = new Portals(parent, "ballgame.portals#" + Portals.getNumber(), new PVector(parent.mouseX, parent.mouseY));
 			} else if(parent.key == 'b') {
   				GameBall gb = new GameBall(parent, "ballgame.GameBall#" + GameBall.getNumber(), new PVector(parent.mouseX,parent.mouseY), new PVector(0,0)); 
+			} else if(parent.key == 's') {
+				Scatterer s = new Scatterer(parent, "ballgame.Scatterer#" + Scatterer.getNumber(), new PVector(parent.mouseX, parent.mouseY));
 			}
 		}
 	}

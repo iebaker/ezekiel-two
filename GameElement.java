@@ -16,6 +16,7 @@ public abstract class GameElement implements Runnable {
 	float myWidth;
 	float myHeight;
     PApplet parent;
+    boolean discarded;
 
 	private int priority;
 	private Thread me = new Thread(this);
@@ -36,6 +37,14 @@ public abstract class GameElement implements Runnable {
 		World.registerGameElement(this);
 	}
 
+
+        public void discard() {
+          discarded = true; 
+        }
+        
+        public boolean isDiscarded() {
+          return discarded; 
+        }
 
 	/**
 	 * (abstract) Draws the element to the screen.

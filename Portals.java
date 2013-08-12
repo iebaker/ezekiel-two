@@ -56,6 +56,10 @@ public class Portals extends GameElement {
 		if(state == PlacementState.DONE) {
 			parent.ellipse(endPosition.x, endPosition.y, 2 * endRadius + 10, 2 * endRadius + 10);
 			if(parent.mousePressed) {
+             if(parent.mouseButton == parent.RIGHT) {
+             World.deleteElement(this);
+             return;
+           }
 				changeSettings();
 			} else {
   				movingStart = false;

@@ -64,15 +64,29 @@ public class World {
 		}
 	}
 
+	public static void deleteElement(GameElement ge) {
+  System.out.println("hi");
+		if(ge == focus) {
+			focus = getGameElement("ballgame.BackgroundElement");
+		} 
+		elementsByClass.get(ge.getClass()).remove(ge);
+		elements.remove(ge.getID());
+ge.discard();
+	}
+
 	public static void tick() {
 		for(String key : elements.keySet()) {
 			GameElement element = elements.get(key);
-			element.whileUnfocused();
-			handleElement(element);
+                        if(!element.isDiscarded()) {
+			  element.whileUnfocused();
+			  handleElement(element);
+                        }
 		}
 		if(focus != null) {
-  			focus.whileFocused();
- 			focus.whileUnfocused(); 
+                        if(!focus.isDiscarded()) {
+  			  focus.whileFocused();
+ 			  focus.whileUnfocused(); 
+                        }
 		}
 	}
 
@@ -93,6 +107,14 @@ public class World {
     				p.actOn(gb); 
 				}
 			} 
+		} else if(elem instanceof Scatterer) {
+			Scatterer s = (Scatterer) elem;
+			for(GameElement ge : getElementsByClass(GameBall.class)) {
+				GameBall gb = (GameBall) ge;
+				if(gb != null) {
+					s.actOn(gb);
+				}
+			}
 		}
 	}
 

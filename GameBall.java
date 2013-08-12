@@ -36,4 +36,8 @@ return number;
 public PVector getVelocity() {
   return velocity; 
 }
+
+public void setVelocity(PVector p) {
+  velocity = new PVector(p.x, p.y); 
+}
 }

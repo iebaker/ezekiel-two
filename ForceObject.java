@@ -40,6 +40,10 @@ public class ForceObject extends GameElement {
 		parent.fill(235);
 
         if(parent.mousePressed) {
+           if(parent.mouseButton == parent.RIGHT) {
+             World.deleteElement(this);
+             return;
+           }
            changeSettings(parent.mouseX, parent.mouseY); 
         } else {
            moving = false; 
