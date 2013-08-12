@@ -1,12 +1,3 @@
 #!/bin/sh
 
-LIB_PATH=lib/core.jar
-
-if [ ! -e build ]; then
-  javac -cp $LIB_PATH src/*.java
-
-  mkdir build
-  mv src/*.class build/
-fi
-
-java -cp build/:$LIB_PATH BallGame
+ant run
