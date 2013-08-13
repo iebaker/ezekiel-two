@@ -20,30 +20,40 @@ class BackgroundElement extends GameElement {
 	}
 
 	@Override
-	public void whileFocused() {
-		if(parent.mousePressed) {
-			if(parent.mouseButton == parent.LEFT) {
+	public void keyPressed() {
+		switch(parent.key) {
+			case 'f':
+				ForceObject force = new ForceObject(parent, "ballgame.ForceObject#" + ForceObject.getNumber(), new PVector(parent.mouseX, parent.mouseY), 0, 0);
+				break;
+
+			case 'p':
+				Portals portals = new Portals(parent, "ballgame.Portals#" + Portals.getNumber(), new PVector(parent.mouseX, parent.mouseY));
+				break;
+
+			case 'b':
+				GameBall ball = new GameBall(parent, "ballgame.GameBall#" + GameBall.getNumber(), new PVector(parent.mouseX, parent.mouseY), new PVector(0, 0));
+				break;
+
+			case 's':
+				Scatterer scatterer = new Scatterer(parent, "ballgame.Scatterer#" + Scatterer.getNumber(), new PVector(parent.mouseX, parent.mouseY));
+				break;
+
+			case 'd':
+				DrawMenu menu = new DrawMenu(parent, "ballgame.DrawMenu", new PVector(parent.mouseX, parent.mouseY));
+				break;
+
+			case 'q':
 				ElementFactory.spawnElement();
-			}
-			else if(parent.mouseButton == parent.RIGHT) {
-				DrawMenu dm = new DrawMenu(parent, "ballgame.DrawMenu", new PVector(parent.mouseX, parent.mouseY));
-			}
-		}
-		if(parent.keyPressed) {
-			if(parent.key == 'f') {
-				ForceObject temp = new ForceObject(parent, "ballgame.ForceObject#" + ForceObject.getNumber(), new PVector(parent.mouseX, parent.mouseY), 0, 0);
-			} else if(parent.key == 'p') {
-				Portals temp = new Portals(parent, "ballgame.portals#" + Portals.getNumber(), new PVector(parent.mouseX, parent.mouseY));
-			} else if(parent.key == 'b') {
-  				GameBall gb = new GameBall(parent, "ballgame.GameBall#" + GameBall.getNumber(), new PVector(parent.mouseX,parent.mouseY), new PVector(0,0)); 
-			} else if(parent.key == 's') {
-				Scatterer s = new Scatterer(parent, "ballgame.Scatterer#" + Scatterer.getNumber(), new PVector(parent.mouseX, parent.mouseY));
-			} else if(parent.key == 'd') {
-				DrawMenu stupid = new DrawMenu(parent, "ballgame.DrawMenu", new PVector(parent.mouseX, parent.mouseY));
-			} else if(parent.key == 'q') {
-				ElementFactory.spawnElement();
-			}
+				break;
 		}
 	}
-
+	
+	@Override
+	public void mousePressed() {
+		if(parent.mouseButton == parent.LEFT) {
+			ElementFactory.spawnElement();
+		} else if(parent.mouseButton == parent.RIGHT) {
+			DrawMenu menu = new DrawMenu(parent, "ballgame.DrawMenu", new PVector(parent.mouseX, parent.mouseY));
+		}
+	}
 }

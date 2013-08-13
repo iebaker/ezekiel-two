@@ -43,13 +43,36 @@ public class Portals extends GameElement implements Actor {
 	public void whileUnfocused() {
 		drawOpening();
 
-		if(state == PlacementState.PLACING) {
-			if(parent.mousePressed) placeEnd();
-		} else {
+		if(state == PlacementState.DONE) {
 			drawEnd();
 		}
 
 		parent.noStroke();
+	}
+
+	@Override
+	public void mousePressed() {
+		if(state == PlacementState.PLACING) {
+			placeEnd();
+		} else {
+			if(parent.mouseButton == parent.RIGHT) {
+				World.deleteElement(this);
+				return;
+			} else if(parent.mouseButton == parent.LEFT) {
+				changeSettings();
+			}
+		}
+	}
+
+	@Override
+	public void mouseDragged() {
+		changeSettings();
+	}
+
+	@Override
+	public void mouseReleased() {
+		movingStart = false;
+		movingEnd = false;
 	}
 
 	public void whileFocused() {
@@ -57,16 +80,6 @@ public class Portals extends GameElement implements Actor {
 		parent.ellipse(startPosition.x, startPosition.y, 2 * startRadius + 18, 2 * startRadius + 18);
 		if(state == PlacementState.DONE) {
 			parent.ellipse(endPosition.x, endPosition.y, 2 * endRadius + 10, 2 * endRadius + 10);
-			if(parent.mousePressed) {
-             if(parent.mouseButton == parent.RIGHT) {
-             World.deleteElement(this);
-             return;
-           }
-				changeSettings();
-			} else {
-  				movingStart = false;
- 				movingEnd = false; 
-			}
 		}
 	}
 

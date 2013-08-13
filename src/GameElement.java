@@ -40,23 +40,41 @@ public abstract class GameElement implements Runnable {
 	}
 
 
-        public void discard() {
-          discarded = true; 
-        }
-        
-        public boolean isDiscarded() {
-          return discarded; 
-        }
-
-		public boolean editing() {
-			return editing;
-		}
+    public void discard() {
+		discarded = true; 
+		me.interrupt();
+	}
+    
+	/**
+  	 * 
+	 */	 
+    public boolean isDiscarded() {
+		return discarded; 
+	}
+	
 
 	/**
-	 * (abstract) Draws the element to the screen.
+	 * Called when the element is not in focus
 	 */
-	public abstract void whileUnfocused();
-        
+	public void whileUnfocused() {
+		return;
+	}	
+
+	public void mousePressed() {
+		return;
+	}
+
+	public void mouseDragged() {
+		return;
+	}
+
+	public void mouseReleased() {
+		return;
+	}
+
+	public void keyPressed() {
+		return;
+	}
 
     /** 
      * A callback method which is called when the element gains focus.
@@ -168,13 +186,13 @@ public abstract class GameElement implements Runnable {
 	 */
 	@Override
 	public void run() {
-		while(true) {
+		while( !me.interrupted() ) {
 			if(mouseOver() && !(World.getFocus() == this)) {
 				World.requestFocus(this);
 			}
 			try {
 				Thread.sleep(20);
-			} catch (InterruptedException e) {}
+			} catch (InterruptedException e) { return; }
 		}
 	}
 }

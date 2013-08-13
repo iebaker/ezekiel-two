@@ -38,17 +38,31 @@ public class ForceObject extends GameElement implements Actor {
 
 	public void whileFocused() {
 		parent.fill(235);
+	}
 
-        if(parent.mousePressed) {
-           if(parent.mouseButton == parent.RIGHT) {
-             World.deleteElement(this);
-             return;
-           }
-           changeSettings(parent.mouseX, parent.mouseY); 
-        } else {
-           moving = false; 
-        }
+	@Override
+	public void mousePressed() {
+		if(parent.mouseButton == parent.RIGHT) {
+			World.deleteElement(this);
+			return;
+		}
+		checkCenter();
+	}
 
+	@Override 
+	public void mouseDragged() {
+		changeSettings();
+	}
+
+	@Override
+	public void mouseReleased() {
+		moving = false;
+	}
+
+	private void checkCenter() {
+		if(PApplet.dist(position.x, position.y, parent.mouseX, parent.mouseY) <= 10) {
+			moving = true;
+		}
 	}
 
      public void onUnfocus() {
@@ -86,7 +100,9 @@ public class ForceObject extends GameElement implements Actor {
         }
     }
         
-    private void changeSettings(float x, float y) {
+    private void changeSettings() {
+		float x = parent.mouseX;
+		float y = parent.mouseY;
         PVector reference = new PVector(0, 1);
         PVector relative = PVector.sub(position, new PVector(x, y));
         float angle = PVector.angleBetween(reference, relative);
@@ -95,12 +111,6 @@ public class ForceObject extends GameElement implements Actor {
         //If we're moving, change the position
         if(moving) {
             position = new PVector(x, y);
-            return; 
-        }
-
-        //If we're over the center, set moving
-        if(relative.mag() <= 10) {
-            moving = true;
             return; 
         }
 
@@ -133,12 +143,12 @@ public class ForceObject extends GameElement implements Actor {
 
     @Override
 	boolean mouseOver() {
-		return parent.dist(position.x, position.y, parent.mouseX, parent.mouseY) <= radius;
+		return parent.dist(position.x, position.y, parent.mouseX, parent.mouseY) <= radius + 10;
 	}
 
     @Override
     public boolean dropFocus() {
-        return !mouseOver() && !parent.mousePressed; 
+        return !mouseOver() && !parent.mousePressed && !moving;
     }
 
     public static int getNumber() {

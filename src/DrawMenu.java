@@ -18,6 +18,10 @@ public class DrawMenu extends GameElement {
 	public void whileUnfocused() {
 		parent.fill(255);
 		parent.ellipse(position.x, position.y, 10, 10);
+		if(done) {
+			System.out.println("deleting because done was true");
+			World.deleteElement(this);
+		}
 	}
 
 	@Override
@@ -28,7 +32,6 @@ public class DrawMenu extends GameElement {
 			if(parent.dist(position.x, position.y, mcurr.y, mcurr.y) > radius) {
 				setDrawType(mcurr);
 				done = true;
-				World.deleteElement(this);
 			}
 		}
 		mprev = new PVector(mcurr.x, mcurr.y);
@@ -76,6 +79,7 @@ public class DrawMenu extends GameElement {
 
 	@Override
 	public boolean dropFocus() {
+	//	System.out.println( "Dropping menu." );
 		return done && !mouseOver() && !parent.mousePressed;
 	}
 }
