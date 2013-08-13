@@ -1,7 +1,7 @@
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Scatterer extends GameElement {
+public class Scatterer extends GameElement implements Actor {
 	private float radius = 10;
 	private float side_length = (2 * radius)/(float)Math.sqrt(2);
 	private float outer_radius = radius + 5;
@@ -23,7 +23,7 @@ setPriority(2);
 
 	@Override
 	public void whileUnfocused() {
-		parent.fill(0);
+		parent.fill(20);
     	parent.quad(position.x, position.y - radius, position.x + radius, position.y, position.x, position.y + radius, position.x - radius, position.y);
 
     	parent.rectMode(parent.CENTER);

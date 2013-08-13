@@ -1,7 +1,7 @@
 import processing.core.PVector;
 import processing.core.PApplet;
 
-public class ForceObject extends GameElement {
+public class ForceObject extends GameElement implements Actor {
     static int number;
 	private float attraction;
 	private float rotation;

@@ -21,6 +21,14 @@ class BackgroundElement extends GameElement {
 
 	@Override
 	public void whileFocused() {
+		if(parent.mousePressed) {
+			if(parent.mouseButton == parent.LEFT) {
+				ElementFactory.spawnElement();
+			}
+			else if(parent.mouseButton == parent.RIGHT) {
+				DrawMenu dm = new DrawMenu(parent, "ballgame.DrawMenu", new PVector(parent.mouseX, parent.mouseY));
+			}
+		}
 		if(parent.keyPressed) {
 			if(parent.key == 'f') {
 				ForceObject temp = new ForceObject(parent, "ballgame.ForceObject#" + ForceObject.getNumber(), new PVector(parent.mouseX, parent.mouseY), 0, 0);
@@ -30,6 +38,10 @@ class BackgroundElement extends GameElement {
   				GameBall gb = new GameBall(parent, "ballgame.GameBall#" + GameBall.getNumber(), new PVector(parent.mouseX,parent.mouseY), new PVector(0,0)); 
 			} else if(parent.key == 's') {
 				Scatterer s = new Scatterer(parent, "ballgame.Scatterer#" + Scatterer.getNumber(), new PVector(parent.mouseX, parent.mouseY));
+			} else if(parent.key == 'd') {
+				DrawMenu stupid = new DrawMenu(parent, "ballgame.DrawMenu", new PVector(parent.mouseX, parent.mouseY));
+			} else if(parent.key == 'q') {
+				ElementFactory.spawnElement();
 			}
 		}
 	}

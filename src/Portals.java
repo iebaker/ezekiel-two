@@ -1,7 +1,7 @@
 import processing.core.PVector;
 import processing.core.PApplet;
 
-public class Portals extends GameElement {
+public class Portals extends GameElement implements Actor {
 	private PVector startPosition;
 	private PVector endPosition;
 	private PlacementState state;
@@ -20,6 +20,8 @@ public class Portals extends GameElement {
 	private enum MouseEnd {
 		START, END, NONE
 	}
+
+	
 
 	public Portals(PApplet p, String i, PVector pos) {
 		super(p, i);

@@ -1,26 +1,20 @@
 import processing.core.*;
+import javax.swing.*;
 
-public class BallGame extends PApplet {
-  World world;
+public class BallGame {
+	public static void main(String[] args) {
+		final JFrame frame = new JFrame("Ezekiel Two");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+		JPanel panel = new JPanel();
+		final EzekielTwo e2 = new EzekielTwo();
+		e2.init();
 
-  @Override
-  public void setup() {
-      size(600, 600);
-      if(frame != null) {
-        frame.setResizable(true); 
-      }
-      noStroke();
-      world = new World();
-      BackgroundElement background = new BackgroundElement(this, "ballgame.BackgroundElement");
-  }
+		panel.add(e2);
+		frame.add(panel);
 
-  @Override
-  public void draw() {
-      background(50);
-      world.tick();
-  }
-
-  public static void main( String[] args ) {
-    PApplet.main( new String[] { "--present", "BallGame" } );
-  }
+		frame.setSize(e2.getSize().width, e2.getSize().height);
+		frame.setVisible(true);
+	}
 }
+   

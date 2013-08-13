@@ -40,7 +40,9 @@ public class World {
 			focus.onFocus();
 			return true;
 		}       
-
+		
+		if(focus.editing()) return false;	
+	
 		//Otherwise, if the requesting object has a higher priority, award it focus
 		if(ge.getPriority() > focus.getPriority()) {
 			focus.onUnfocus();
@@ -65,7 +67,6 @@ public class World {
 	}
 
 	public static void deleteElement(GameElement ge) {
-  System.out.println("hi");
 		if(ge == focus) {
 			focus = getGameElement("ballgame.BackgroundElement");
 		} 
