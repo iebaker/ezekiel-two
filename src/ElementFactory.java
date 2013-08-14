@@ -39,7 +39,7 @@ public class ElementFactory {
 				break;
 
 			case SCATTERER:
-				Scatterer tempsc = new Scatterer(parent, "ballgame.Scatterer#" + Scatterer.getNumber(), new PVector(parent.mouseX, parent.mouseX));
+				Scatterer tempsc = new Scatterer(parent, "ballgame.Scatterer#" + Scatterer.getNumber(), new PVector(parent.mouseX, parent.mouseY));
 				break;			
 		}
 	}

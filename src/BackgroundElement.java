@@ -21,6 +21,11 @@ class BackgroundElement extends GameElement {
 
 	@Override
 	public void keyPressed() {
+		if(parent.key == parent.CODED) {
+			if(parent.keyCode == parent.CONTROL) {
+				DrawMenu menu = new DrawMenu(parent, "ballgame.DrawMenu", new PVector(parent.mouseX, parent.mouseY));
+			}
+		}
 		switch(parent.key) {
 			case 'f':
 				ForceObject force = new ForceObject(parent, "ballgame.ForceObject#" + ForceObject.getNumber(), new PVector(parent.mouseX, parent.mouseY), 0, 0);

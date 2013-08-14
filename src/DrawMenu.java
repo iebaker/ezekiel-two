@@ -16,20 +16,22 @@ public class DrawMenu extends GameElement {
 	}
 
 	public void whileUnfocused() {
+//	System.out.println("whileUnfocused : " + done);
 		parent.fill(255);
 		parent.ellipse(position.x, position.y, 10, 10);
 		if(done) {
-			System.out.println("deleting because done was true");
+			//System.out.println("deleting because done was true");
 			World.deleteElement(this);
 		}
 	}
 
 	@Override
 	public void whileFocused() {
+//		System.out.println("whileFocused : " + done);
 		renderMenu();
 		mcurr = new PVector(parent.mouseX, parent.mouseY);
 		if(parent.dist(position.x, position.y, mprev.x, mprev.y) <= radius) {
-			if(parent.dist(position.x, position.y, mcurr.y, mcurr.y) > radius) {
+			if(parent.dist(position.x, position.y, mcurr.x, mcurr.y) > radius) {
 				setDrawType(mcurr);
 				done = true;
 			}
@@ -42,6 +44,7 @@ public class DrawMenu extends GameElement {
 		PVector comparator = new PVector(0,1);
 		PVector relative = PVector.sub(loc, position);
 		float angle = PVector.angleBetween(relative, comparator);
+
 		if(within(angle, 0, parent.PI/8)) {
 			ElementFactory.setType(ElementFactory.ElementType.FORCE_OBJECT);
 		} else if(within(angle, parent.PI/8, 3 * parent.PI/8)) {
