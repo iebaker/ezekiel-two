@@ -160,7 +160,7 @@ public class Walls extends GameElement {
 		public WallNode node1;
 		public WallNode node2;
 		public WallEdge(WallNode n1, WallNode n2) {
-			if(n1.getPosition().y < n2.getPosition().y) {
+			if(n1.getPosition().y > n2.getPosition().y) {
 				node1 = n2;
 				node2 = n1;
 			} else {
@@ -283,10 +283,11 @@ public class Walls extends GameElement {
 
 				//Find the angle between that vector and the edge vector, and set the rotation direction appropriately
 				float checkangle = PVector.angleBetween(edgeVector, ball.getVelocity()); 
-				int dir = checkangle <= 90 ? 1 : -1;
+				int dir = parent.degrees(checkangle) <= 90 ? -1 : 1;
 
 				//Spin the ball's velocity by the right amount in the right direction and then place us on the intersect
 				ball.getVelocity().rotate(dir * 2 * angle);
+//				System.out.println(intersection.x + ", " + intersection.y);
 				ball.setPosition(intersection);
 
 				//Find how far off the intersection the ball would have gotten by next time tick, and advance that far
@@ -308,7 +309,8 @@ public class Walls extends GameElement {
 			within(intX, B1.x, B2.x) &&
 			within(intY, A1.y, A2.y) &&
 			within(intY, B1.y, B2.y)) {
-			intersection = new PVector(intX, intY);
+			intersection.x = intX;
+			intersection.y = intY;
 			return true;
 		}
 		return false;
