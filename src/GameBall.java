@@ -40,4 +40,9 @@ public PVector getVelocity() {
 public void setVelocity(PVector p) {
   velocity = new PVector(p.x, p.y); 
 }
+
+@Override
+public void run() {
+	return;
+}
 }

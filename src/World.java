@@ -8,7 +8,20 @@ public class World {
 	private static HashMap<String, GameElement> elements = new HashMap<String, GameElement>();
 	private static HashMap<Class<?>, List<GameElement>> elementsByClass = new HashMap<Class<?>, List<GameElement>>();
 	private static GameElement focus;
-        
+	private static List<GameElement> deleted = new ArrayList<GameElement>();    
+  private static List<Class<?>> classOrder = new ArrayList<Class<?>>();  
+
+	static {
+		classOrder.add(BackgroundElement.class);
+		classOrder.add(GameBall.class);
+		classOrder.add(Scatterer.class);
+		classOrder.add(Portals.class);
+		classOrder.add(ForceObject.class);
+		classOrder.add(Walls.class);
+		classOrder.add(Walls.WallNode.class);
+		classOrder.add(DrawMenu.class);
+	}
+
 	public static void registerGameElement(GameElement ge) {
 		elements.put(ge.getID(), ge);
 		Class<?> element_class = ge.getClass();
@@ -33,6 +46,30 @@ public class World {
 		}
 	}
 
+	public static void clearBalls() {
+		ArrayList<GameElement> tbd = new ArrayList<GameElement>();	
+		for(GameElement ge : getElementsByClass(GameBall.class)) {
+			tbd.add(ge);
+		}
+		markForDeletion(tbd);
+	}
+
+	public static void clearActors() {
+		ArrayList<GameElement> allActors = new ArrayList<GameElement>();
+		allActors.addAll(getElementsByClass(ForceObject.class));
+		allActors.addAll(getElementsByClass(Portals.class));
+		allActors.addAll(getElementsByClass(Walls.class));
+		allActors.addAll(getElementsByClass(Walls.WallNode.class));
+		allActors.addAll(getElementsByClass(Scatterer.class));
+		markForDeletion(allActors);
+	}
+
+	public static void markForDeletion(ArrayList<GameElement> elements) {
+		synchronized(deleted) {
+			deleted.addAll(elements);
+		}
+	}
+
 	public static boolean requestFocus(GameElement ge) {
 		//If this is the first object to request focus, give it focus
 		if(focus == null) {
@@ -45,7 +82,7 @@ public class World {
 		if(ge.getPriority() > focus.getPriority()) {
 			focus.onUnfocus();
 			focus = ge;
-            focus.onFocus();
+      focus.onFocus();
 			return true;
 		} 
 
@@ -65,24 +102,31 @@ public class World {
 	}
 
 	public static void deleteElement(GameElement ge) {
+		synchronized(deleted) {
+			deleted.add(ge);
+		}
+	}
+	
+	public static void destroyElement(GameElement ge) {
 		elementsByClass.get(ge.getClass()).remove(ge);
 		elements.remove(ge.getID());
 		ge.discard();
 	}
 
 	public static void tick() {
-		for(String key : elements.keySet()) {
-			GameElement element = elements.get(key);
-                        if(!element.isDiscarded()) {
-			  element.whileUnfocused();
-			  handleElement(element);
-                        }
+		for(GameElement elem : deleted) {
+			destroyElement(elem);
 		}
-		if(focus != null) {
-                        if(!focus.isDiscarded()) {
-  			  focus.whileFocused();
- 			  focus.whileUnfocused(); 
-                        }
+		for(Class<?> c : classOrder) {
+			for(GameElement elem : getElementsByClass(c)) {
+				if(!elem.isDiscarded()) {
+					if(focus != null && focus == elem) {
+						elem.whileFocused();
+					}
+					elem.whileUnfocused();
+					handleElement(elem);
+				}
+			}
 		}
 	}
 
@@ -109,6 +153,14 @@ public class World {
 				GameBall gb = (GameBall) ge;
 				if(gb != null) {
 					s.actOn(gb);
+				}
+			}
+		} else if(elem instanceof Walls) {
+			Walls w = (Walls) elem;	
+			for(GameElement ge : getElementsByClass(GameBall.class)) {
+				GameBall gb = (GameBall) ge;
+				if(gb != null) {
+					w.actOn(gb);
 				}
 			}
 		}

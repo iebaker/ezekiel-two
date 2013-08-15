@@ -6,7 +6,8 @@ import processing.core.PVector;
  */
 public class ElementFactory {
 	public enum ElementType {
-  		GAME_BALL, FORCE_OBJECT, PORTALS, SCATTERER
+  		GAME_BALL, FORCE_OBJECT, PORTALS, SCATTERER,
+			BALL_BARRIER, FORCE_BARRIER, BOTH_BARRIER
 	}
 
 	private static ElementType currentType = ElementType.FORCE_OBJECT;
@@ -40,7 +41,13 @@ public class ElementFactory {
 
 			case SCATTERER:
 				Scatterer tempsc = new Scatterer(parent, "ballgame.Scatterer#" + Scatterer.getNumber(), new PVector(parent.mouseX, parent.mouseY));
-				break;			
+				break;
+
+			case BALL_BARRIER:
+			case FORCE_BARRIER:
+			case BOTH_BARRIER:
+				Walls tempwa = new Walls(parent, "ballgame.Walls#" + Walls.getNumber(), new PVector(parent.mouseX, parent.mouseY));
+				tempwa.addNode(new PVector(parent.mouseX, parent.mouseY));			
 		}
 	}
 }

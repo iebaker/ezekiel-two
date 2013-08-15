@@ -1,11 +1,13 @@
 import processing.core.PApplet;
 import processing.core.PVector;
+import java.util.HashMap;
 
 public class DrawMenu extends GameElement {
 	private PVector mprev;
 	private PVector mcurr;
 	private float radius = 60;
 	private boolean done = false;
+	private HashMap<Integer, String> map = new HashMap<Integer, String>();
 
 	public DrawMenu(PApplet par, String i, PVector p) {
 		super(par, i);
@@ -13,14 +15,22 @@ public class DrawMenu extends GameElement {
 		setPriority(4);	
 		mprev = new PVector(parent.mouseX, parent.mouseY);
 		mcurr = new PVector(parent.mouseX, parent.mouseY);
+		createMap();
+	}
+
+	private void createMap() {
+		map.put(0, "F");
+		map.put(1, "S");
+		map.put(2, "Clr-F");
+		map.put(3, "W(b)");
+		map.put(4, "W(fb)");
+		map.put(5, "W(f)");
+		map.put(6, "Clr-B");
+		map.put(7, "P");
 	}
 
 	public void whileUnfocused() {
-//	System.out.println("whileUnfocused : " + done);
-		parent.fill(255);
-		parent.ellipse(position.x, position.y, 10, 10);
 		if(done) {
-			//System.out.println("deleting because done was true");
 			World.deleteElement(this);
 		}
 	}
@@ -53,6 +63,20 @@ public class DrawMenu extends GameElement {
 			} else {
 				ElementFactory.setType(ElementFactory.ElementType.SCATTERER);
 			}
+		} else if(within(angle, 3 * parent.PI/8, 5 * parent.PI/8)) {
+			if(right) {
+				World.clearBalls();
+			} else {
+				World.clearActors();
+			}
+		} else if(within(angle, 5 * parent.PI/8, 7 * parent.PI/8)) {
+			if(right) {
+				ElementFactory.setType(ElementFactory.ElementType.FORCE_BARRIER);
+			} else {
+				ElementFactory.setType(ElementFactory.ElementType.BALL_BARRIER);
+			}
+		} else {
+			ElementFactory.setType(ElementFactory.ElementType.BOTH_BARRIER);
 		}
 	}
 
@@ -70,7 +94,8 @@ public class DrawMenu extends GameElement {
 		PVector to = new PVector(0, radius);
 		for(int i = 0; i < 8; ++i) {
 			PVector at = PVector.add(position, to);
-			parent.ellipse(at.x, at.y, 10, 10);
+			parent.textAlign(parent.CENTER, parent.CENTER);
+			parent.text(map.get(i) + "", at.x, at.y);
 			to.rotate(parent.QUARTER_PI);
 		}
 	}

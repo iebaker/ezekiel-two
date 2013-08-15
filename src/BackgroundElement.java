@@ -50,6 +50,11 @@ class BackgroundElement extends GameElement {
 			case 'q':
 				ElementFactory.spawnElement();
 				break;
+
+			case 'w':
+				Walls walls = new Walls(parent, "ballgame.Walls#" + Walls.getNumber(), new PVector(parent.mouseX, parent.mouseY));
+				walls.addNode(new PVector(parent.mouseX, parent.mouseY));
+				break;
 		}
 	}
 	

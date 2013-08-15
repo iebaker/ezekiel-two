@@ -48,13 +48,21 @@ setPriority(2);
 		parent.rectMode(parent.CENTER);
 		parent.rect(position.x, position.y, outer_side_length, outer_side_length);
 		parent.rectMode(parent.CORNER);
-		if(parent.mousePressed) {
-			if(parent.mouseButton == parent.RIGHT) {
-				World.deleteElement(this);
-				return;
-			}
+	}
+
+	@Override
+	public void mousePressed() {
+		if(parent.mouseButton == parent.RIGHT) {
+			World.deleteElement(this);
+			return;
+		} else {
 			changeSettings();
 		}
+	}
+
+	@Override
+	public void mouseDragged() {
+		changeSettings();
 	}
 
 	private void changeSettings() {

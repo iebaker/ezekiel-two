@@ -9,7 +9,7 @@ public class EzekielTwo extends PApplet {
 
 	@Override
 	public void setup() {
-		size(900,700);
+		size(900,550);
 		if(frame != null) {
 			frame.setResizable(true);
 		}
