@@ -21,13 +21,15 @@ public class ForceObject extends GameElement implements Actor {
 	}
 
 	public void actOn(GameBall ball) {
-		float mag = 1/parent.sqrt(PVector.dist(position, ball.getPosition()));
-		PVector attr = PVector.sub(position, ball.getPosition());
-		attr.normalize();
-		PVector spin = new PVector(attr.y, -attr.x);
-		attr.mult(attraction * 13 * mag);
-		spin.mult(rotation * 4 * mag);
-		ball.update(PVector.add(attr, spin));
+		if(Walls.permit(this, ball)) {
+			float mag = 1/parent.sqrt(PVector.dist(position, ball.getPosition()));
+			PVector attr = PVector.sub(position, ball.getPosition());
+			attr.normalize();
+			PVector spin = new PVector(attr.y, -attr.x);
+			attr.mult(attraction * 13 * mag);
+			spin.mult(rotation * 4 * mag);
+			ball.update(PVector.add(attr, spin));
+		}
 	}
 
 

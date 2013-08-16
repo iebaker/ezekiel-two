@@ -266,10 +266,8 @@ public class Walls extends GameElement {
 	}
 
 	public void actOn(GameBall ball) {
-		List<WallEdge> relevant = new ArrayList<WallEdge>();
-		relevant.addAll(ball_deflecting);
-		relevant.addAll(both_deflecting);
-		for(WallEdge edge : relevant) {
+		List<WallEdge> relevant = getBallWalls();
+			for(WallEdge edge : relevant) {
 			PVector intersection = new PVector(0,0);
 			if(intersect(ball.getPosition(), PVector.add(ball.getPosition(), ball.getVelocity()), edge.node1.getPosition(), edge.node2.getPosition(), intersection)) {
 				
@@ -293,12 +291,25 @@ public class Walls extends GameElement {
 				//Find how far off the intersection the ball would have gotten by next time tick, and advance that far
 				PVector jump = ball.getVelocity().get();
 				jump.setMag(parent.dist(ball_next.x, ball_next.y, intersection.x, intersection.y));
-				//ball.getPosition().add(jump);
+				ball.getPosition().add(jump);
 			}
 		}
 	}
 
-	private boolean intersect(PVector A1, PVector A2, PVector B1, PVector B2, PVector intersection) {
+	public static boolean permit(ForceObject force, GameBall ball) {
+		for(GameElement ge : World.getElementsByClass(Walls.class)) {
+			Walls w = (Walls) ge;
+			List<WallEdge> relevant = w.getForceWalls();
+			for(WallEdge edge : relevant) {
+				if(intersect(force.getPosition(), ball.getPosition(), edge.node1.getPosition(), edge.node2.getPosition(), null)) {
+					return false;
+				}	
+			}
+		}
+		return true;
+	}
+
+	private static boolean intersect(PVector A1, PVector A2, PVector B1, PVector B2, PVector intersection) {
 		float mA = (A2.y - A1.y) / (A2.x - A1.x);
 		float mB = (B2.y - B1.y) / (B2.x - B1.x);
 
@@ -309,15 +320,17 @@ public class Walls extends GameElement {
 			within(intX, B1.x, B2.x) &&
 			within(intY, A1.y, A2.y) &&
 			within(intY, B1.y, B2.y)) {
-			intersection.x = intX;
-			intersection.y = intY;
+			if(intersection != null) {
+				intersection.x = intX;
+				intersection.y = intY;
+			}
 			return true;
 		}
 		return false;
 	
 	}
 
-	private boolean within(float a, float E1, float E2) {
+	private static boolean within(float a, float E1, float E2) {
     return a >= E1 && a <= E2 || a >= E2 && a <= E1;
 	}
 
