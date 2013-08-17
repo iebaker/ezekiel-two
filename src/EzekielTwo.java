@@ -1,22 +1,37 @@
 import processing.core.*;
-import java.awt.Dimension;
 
 public class EzekielTwo extends PApplet {
 	World world;
 	float pwidth;
 	float pheight;
 
+  // preferred width and height variables
+  int _w;
+  int _h;
+
+  /** Constructs a new instance of the game.
+   * @param w width of the game applet, in pixels
+   * @param h height of the game applet, in pixels
+   */
+  public EzekielTwo( int w, int h ) {
+    super();
+
+    _w = w;
+    _h = h;
+  }
 
 	@Override
 	public void setup() {
-		size(900,550);
-		if(frame != null) {
+    size( _w, _h );
+
+		if(frame != null)
 			frame.setResizable(true);
-		}
-		noStroke();	
+
 		ElementFactory.setParent(this);
 		world = new World();
 		BackgroundElement background = new BackgroundElement(this, "ballgame.BackgroundElement");
+
+		noStroke();	
 		pwidth = width;
 		pheight = height;
 	}
