@@ -70,16 +70,16 @@ setPriority(2);
 	}
 
 
+  /** Scatter balls if within action radius.
+   * Points the ball in a random direction and moves it to the scatterer.
+   * @param b the ball to be acted upon
+   */
 	public void actOn(GameBall b) {
 		if(parent.dist(position.x, position.y, b.getPosition().x, b.getPosition().y) <= radius) {
-			float mag = b.getVelocity().mag();
-			PVector rand = new PVector(parent.random(parent.width), parent.random(parent.height));
-			PVector toRand = PVector.sub(rand, position);
-			PVector dummy = new PVector(toRand.x, toRand.y);
-			dummy.setMag(radius+5);
-			toRand.setMag(mag);
-			b.setPosition(PVector.add(position, dummy));
-			b.setVelocity(toRand);
+			PVector rand = PVector.random2D();
+			rand.setMag( b.getVelocity().mag() );
+			b.setPosition( PVector.add( position, rand.setMag( null, radius + 10 ) ) );
+			b.setVelocity( rand );
 		}
 	}
 }
